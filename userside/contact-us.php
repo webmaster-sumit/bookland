@@ -1,254 +1,150 @@
-<?php include 'conn.php'?>
+<?php include "conn.php"; ?>
+
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Form se aayi hui values ko sanitize karte hain
+    $fullName = htmlspecialchars(strip_tags(trim($_POST['fullName'])));
+    $email = htmlspecialchars(strip_tags(trim($_POST['email'])));
+    $phone = htmlspecialchars(strip_tags(trim($_POST['phone'])));
+    $message = htmlspecialchars(strip_tags(trim($_POST['message'])));
+
+    // Validations karne ka basic tarika
+    $errors = [];
+
+    if (empty($fullName)) {
+        $errors[] = "Full Name is required.";
+    }
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "A valid Email is required.";
+    }
+    if (empty($phone) || !preg_match('/^[0-9]{10}$/', $phone)) {
+        $errors[] = "A valid 10-digit Phone Number is required.";
+    }
+    if (empty($message)) {
+        $errors[] = "Message is required.";
+    }
+
+    // Agar koi error nahi toh data ko database mein insert karna
+    if (empty($errors)) {
+        // SQL query for inserting data
+        $stmt = $conn->prepare("INSERT INTO contact_form (full_name, email, phone, message) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $fullName, $email, $phone, $message);
+
+        if ($stmt->execute()) {
+            echo "<p class='alert alert-success'>Thank you, $fullName. Your message has been received!</p>";
+        } else {
+            echo "<p class='alert alert-danger'>Error: " . $stmt->error . "</p>";
+        }
+
+        $stmt->close();
+    } else {
+        // Errors ko display karna
+        foreach ($errors as $error) {
+            echo "<p class='alert alert-danger'>$error</p>";
+        }
+    }
+}
+
+$conn->close(); // Database connection close
+?>
+
 <!DOCTYPE html>
 <html lang="en">
-
-<!-- Mirrored from bookland.dexignzone.com/xhtml/contact-us.php by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2024 10:11:46 GMT -->
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="keywords" content="" />
-	<meta name="author" content="" />
-	<meta name="robots" content="" />
-	<meta name="description" content="Bookland-Book Store Ecommerce Website"/>
-	<meta property="og:title" content="Bookland-Book Store Ecommerce Website"/>
-	<meta property="og:description" content="Bookland-Book Store Ecommerce Website"/>
-	<meta property="og:image" content="../../makaanlelo.com/tf_products_007/bookland/xhtml/social-image.html"/>
-	<meta name="format-detection" content="telephone=no">
-	
-	<!-- FAVICONS ICON -->
-	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.png" />
-	
-	<!-- PAGE TITLE HERE -->
-	<title>Bookland-Book Store Ecommerce Website</title>
-	
-	<!-- MOBILE SPECIFIC -->
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
-	<!-- STYLESHEETS -->
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<link rel="stylesheet" type="text/css" href="icons/fontawesome/css/all.min.css">
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap-select/dist/css/bootstrap-select.min.css">
-	
-	
-	<!-- GOOGLE FONTS-->
-	<link rel="preconnect" href="https://fonts.googleapis.com/">
-	<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&amp;family=Poppins:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us Form</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif; /* Custom font */
+            background-color: #f8f9fa; /* Light background */
+        }
+        .container {
+            margin-top: 50px;
+            border: 1px solid #ccc; /* Border for the form container */
+            border-radius: 10px; /* Rounded corners */
+            padding: 20px;
+            background-color: #ffffff; /* White background for the form */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
+        }
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #4CAF50; /* Green border on focus */
+        }
+        .btn-custom {
+            background-color: #4CAF50; /* Custom button color */
+            color: white;
+            font-weight: bold; /* Bold text */
+            padding: 12px 20px; /* Increased padding */
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s, transform 0.3s; /* Transition effects */
+            display: flex; /* Flexbox for centering content */
+            align-items: center; /* Center vertically */
+            justify-content: center; /* Center horizontally */
+        }
+        .btn-custom:hover {
+            background-color: #45a049; /* Darker green on hover */
+            transform: scale(1.05); /* Slightly enlarge button on hover */
+        }
+        .btn-custom:focus {
+            outline: none; /* Remove default outline */
+            box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.5); /* Green glow on focus */
+        }
+        .alert {
+            margin-top: 20px;
+            border-radius: 5px; /* Rounded corners for alerts */
+        }
+        .form-group label {
+            font-weight: 500; /* Bold labels */
+        }
+        .icon {
+            margin-right: 8px; /* Spacing between icon and text */
+        }
+    </style>
 </head>
-
 <body>
-<?php include 'navbar2.php'?>
-	<div class="page-wraper">
-		<div id="loading-area" class="preloader-wrapper-1">
-			<div class="preloader-inner">
-				<div class="preloader-shade"></div>
-				<div class="preloader-wrap"></div>
-				<div class="preloader-wrap wrap2"></div>
-				<div class="preloader-wrap wrap3"></div>
-				<div class="preloader-wrap wrap4"></div>
-				<div class="preloader-wrap wrap5"></div>
-			</div> 
-		</div>
-		<style>
-.DZ-theme-btn {
-    display: none !important;
-}
-</style>
-		
-		<div class="page-content">
-			<!-- inner page banner -->
-			<div class="dz-bnr-inr overlay-secondary-dark dz-bnr-inr-sm" style="background-image:url(images/background/bg3.jpg);">
-				<div class="container">
-					<div class="dz-bnr-inr-entry">
-						<h1>Contact</h1>
-						<nav aria-label="breadcrumb" class="breadcrumb-row">
-							<ul class="breadcrumb">
-								<li class="breadcrumb-item"><a href="home.php">Home</a></li>
-								<li class="breadcrumb-item">Contact</li>
-							</ul>
-						</nav>
-					</div>
-				</div>
-			</div>
-			<div class="content-inner-2 pt-0">
-				<div class="map-iframe">
-					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d227748.3825624477!2d75.65046970649679!3d26.88544791796718!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396c4adf4c57e281%3A0xce1c63a0cf22e09!2sJaipur%2C+Rajasthan!5e0!3m2!1sen!2sin!4v1500819483219" style="border:0; width:100%; min-height:100%; margin-bottom: -8px;" allowfullscreen></iframe>
-				</div>
-			</div>
-		
-			<section class="contact-wraper1" style="background-image: url(images/background/bg2.jpg);">	
-				<div class="container">
-					<div class="row">
-						<div class="col-lg-5">
-							<div class="contact-info">
-								<div class="section-head text-white style-1">
-									<h3 class="title text-white">Get In Touch</h3>
-									<p>If you are interested in working with us, please get in touch.</p>
-								</div>
-								<ul class="no-margin">
-									<li class="icon-bx-wraper text-white left m-b30">
-										<div class="icon-md">
-											<span class="icon-cell text-primary">
-												<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map-pin"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-											</span>
-										</div>
-										<div class="icon-content">
-											<h5 class=" dz-tilte text-white">Our Address</h5>
-											<p>1247/Plot No. 39, 15th Phase, Huab Colony, Kukatpally, Hyderabad</p>
-										</div>
-									</li>
-									<li class="icon-bx-wraper text-white left m-b30">
-										<div class="icon-md">
-											<span class="icon-cell text-primary">
-												<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-											</span>
-										</div>
-										<div class="icon-content">
-											<h5 class="dz-tilte text-white">Our Email</h5>
-											<p>info@gmail<br>services@gmail.com</p>
-										</div>
-									</li>
-								</ul>
-							</div>
-						</div>
-						<div class="col-lg-7 m-b40">
-							<div class="contact-area1 m-r20 m-md-r0">
-								<div class="section-head style-1">
-									<h6 class="sub-title text-primary">CONTACT US</h6>
-									<h3 class="title m-b20">Get In Touch With Us</h3>
-								</div>
-								<form class="dz-form dzForm" method="POST" action="https://bookland.dexignzone.com/xhtml/script/contact_smtp.php">
-									<input type="hidden" class="form-control" name="dzToDo" value="Contact">
-									<div class="dzFormMsg"></div>		
-									<div class="input-group">
-										<input required type="text" class="form-control" name="dzName" placeholder="Full Name">
-									</div>
-									<div class="input-group">
-										<input required type="text" class="form-control" name="dzEmail" placeholder="Email Adress">
-									</div>
-									<div class="input-group">
-										<input required type="text" class="form-control" name="dzPhoneNumber" placeholder="Phone No.">
-									</div>
-									<div class="input-group">
-										<textarea required name="dzMessage" rows="5" class="form-control">Message</textarea>
-									</div>
-									<div class="mb-3">
-										<div class="g-recaptcha" data-sitekey="6LefsVUUAAAAADBPsLZzsNnETChealv6PYGzv3ZN" data-callback="verifyRecaptchaCallback" data-expired-callback="expiredRecaptchaCallback"></div>
-										<input class="form-control d-none" style="display:none;" data-recaptcha="true" required data-error="Please complete the Captcha">
-									</div>
-									<div>
-										<button name="submit" type="submit" value="submit" class="btn w-100 btn-primary btnhover">SUBMIT</button>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-			
-			<!-- Feature Box -->
-			<section class="content-inner">
-				<div class="container">
-					<div class="row sp15">
-						<div class="col-lg-3 col-md-6 col-sm-6 col-6">
-							<div class="icon-bx-wraper style-2 m-b30 text-center">
-								<div class="icon-bx-lg">
-									<i class="fa-solid fa-users icon-cell"></i>
-								</div>
-								<div class="icon-content">
-									<h2 class="dz-title counter m-b0">125,663</h2>
-									<p class="font-20">Happy Customers</p>
-								</div>
-							</div>
-						</div>
-						<div class=" col-lg-3 col-md-6 col-sm-6 col-6">
-							<div class="icon-bx-wraper style-2 m-b30 text-center">
-								<div class="icon-bx-lg"> 
-									<i class="fa-solid fa-book icon-cell"></i>
-								</div>
-								<div class="icon-content">
-									<h2 class="dz-title counter m-b0">50,672</h2>
-									<p class="font-20">Book Collections</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-md-6 col-sm-6 col-6">
-							<div class="icon-bx-wraper style-2 m-b30 text-center">
-								<div class="icon-bx-lg"> 
-									<i class="fa-solid fa-store icon-cell"></i>
-								</div>
-								<div class="icon-content">
-									<h2 class="dz-title counter m-b0">1,562</h2>
-									<p class="font-20">Our Stores</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-3 col-md-6 col-sm-6 col-6">
-							<div class="icon-bx-wraper style-2 m-b30 text-center">
-								<div class="icon-bx-lg"> 
-									<i class="fa-solid fa-leaf icon-cell"></i>
-								</div>
-								<div class="icon-content">
-									<h2 class="dz-title counter m-b0">457</h2>
-									<p class="font-20">Famous Writers</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-			<!-- Feature Box End -->
-			
-			<!-- Newsletter -->
-			<section class="py-5 newsletter-wrapper" style="background-image: url('images/background/bg1.jpg'); background-size: cover;">
-				<div class="container">
-					<div class="subscride-inner">
-						<div class="row style-1 justify-content-xl-between justify-content-lg-center align-items-center text-xl-start text-center">
-							<div class="col-xl-7 col-lg-12">
-								<div class="section-head mb-0">
-									<h2 class="title text-white my-lg-3 mt-0">Subscribe our newsletter for newest books updates</h2>
-								</div>
-							</div>
-							<div class="col-xl-5 col-lg-6">
-								<form class="dzSubscribe style-1" action="https://bookland.dexignzone.com/xhtml/script/mailchamp.php" method="post">
-									<div class="dzSubscribeMsg"></div>
-									<div class="form-group">
-										<div class="input-group mb-0">
-											<input name="dzEmail" required="required" type="email" class="form-control bg-transparent text-white" placeholder="Your Email Address">
-											<div class="input-group-addon">
-												<button name="submit" value="Submit" type="submit" class="btn btn-primary btnhover">
-													<span>SUBSCRIBE</span>
-													<i class="fa-solid fa-paper-plane"></i>
-												</button>
-											</div>
-										</div>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-			<!-- Newsletter End -->
-				
-		</div>
-		<?php include 'footer.php'?>
-		
-		<button class="scroltop" type="button"><i class="fas fa-arrow-up"></i></button>
-	</div>
-	
-<!-- JAVASCRIPT FILES ========================================= -->
-<script src="js/jquery.min.js"></script><!-- JQUERY MIN JS -->
-<script src="vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script><!-- BOOTSTRAP MIN JS -->
-<script src="vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script><!-- BOOTSTRAP SELECT MIN JS -->
-<script src='../../www.google.com/recaptcha/api.js'></script> <!-- Google API For Recaptcha  -->
-<script src="vendor/counter/waypoints-min.js"></script><!-- WAYPOINTS JS -->
-<script src="vendor/counter/counterup.min.js"></script><!-- COUNTERUP JS -->
-<script src="js/dz.ajax.js"></script><!-- AJAX -->
-<script src="js/custom.js"></script><!-- CUSTOM JS -->
+    <?php include "navbar.php" ?>
+    <div class="container">
+        <h2 class="text-center">Contact Us</h2>
+        <form action="contact-us.php" method="POST" class="mt-4">
+            <div class="form-group">
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" name="fullName" class="form-control" placeholder="Enter your full name" required>
+            </div>
 
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="text" id="phone" name="phone" class="form-control" placeholder="Enter your phone number" pattern="[0-9]{10}" required>
+                <small class="form-text text-muted">Please enter a 10-digit phone number.</small>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" class="form-control" rows="4" placeholder="Type your message here" required></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-custom btn-block">
+                <span class="icon"><i class="fas fa-paper-plane"></i></span>
+                Submit
+            </button>
+        </form>
+    </div>
+    <?php include "footer.php" ?>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Font Awesome for Icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </body>
-
-<!-- Mirrored from bookland.dexignzone.com/xhtml/contact-us.php by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2024 10:11:47 GMT -->
 </html>
