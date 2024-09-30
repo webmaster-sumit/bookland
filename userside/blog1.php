@@ -61,6 +61,31 @@ foreach ($posts as $post) {
     <meta name="keywords" content="Blog, Articles, Technology, News">
     <title>Blog</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="description" content="Bookland-Book Store Ecommerce Website" />
+	<meta property="og:title" content="Bookland-Book Store Ecommerce Website" />
+	<meta property="og:description" content="Bookland-Book Store Ecommerce Website" />
+	<meta property="og:image" content="../../makaanlelo.com/tf_products_007/bookland/xhtml/social-image.html" />
+	<meta name="format-detection" content="telephone=no">
+
+	<!-- FAVICONS ICON -->
+	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.png" />
+
+	<!-- PAGE TITLE HERE -->
+
+	<!-- MOBILE SPECIFIC -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- STYLESHEETS -->
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="icons/fontawesome/css/all.min.css">
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap-select/dist/css/bootstrap-select.min.css">
+	<link rel="stylesheet" type="text/css" href="vendor/swiper/swiper-bundle.min.css">
+
+
+	<!-- GOOGLE FONTS-->
+	<link rel="preconnect" href="https://fonts.googleapis.com/">
+	<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&amp;family=Poppins:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -100,7 +125,17 @@ foreach ($posts as $post) {
 </head>
 <body>
    <?php include 'navbar.php'; ?>
-
+   <div class="page-wraper">
+	<div id="loading-area" class="preloader-wrapper-1">
+		<div class="preloader-inner">
+			<div class="preloader-shade"></div>
+			<div class="preloader-wrap"></div>
+			<div class="preloader-wrap wrap2"></div>
+			<div class="preloader-wrap wrap3"></div>
+			<div class="preloader-wrap wrap4"></div>
+			<div class="preloader-wrap wrap5"></div>
+		</div> 
+	</div>
     <div class="container my-4">
         <h1 class="my-4">Blog Posts</h1>
 
@@ -171,14 +206,17 @@ foreach ($posts as $post) {
     </div>
 
     <!-- Footer -->
-    <footer class="footer bg-dark text-white text-center py-4">
-        <div class="container">
-            <span>&copy; 2024 My Blog. All rights reserved. | <a href="#" class="text-white">Privacy Policy</a></span>
-        </div>
-    </footer>
+    <?php include 'footer.php' ?>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="vendor/swiper/swiper-bundle.min.js"></script><!-- SWIPER JS -->
+	<script src="vendor/counter/waypoints-min.js"></script><!-- WAYPOINTS JS -->
+	<script src="vendor/counter/counterup.min.js"></script><!-- COUNTERUP JS -->
+	<script src="vendor/countdown/counter.js"></script><!-- COUNTER JS -->
+	<script src="js/dz.carousel.js"></script><!-- DZ CAROUSEL JS -->
+	<script src="js/dz.ajax.js"></script><!-- AJAX -->
+	<script src="js/custom.js"></script><!-- CUSTOM JS -->
 </body>
 </html>

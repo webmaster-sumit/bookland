@@ -119,6 +119,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="preloader-wrap wrap5"></div>
             </div>
         </div>
+        <style>
+.DZ-theme-btn {
+    display: none !important;
+}
+</style>
 
         <!-- Registration Form Section -->
         <section class="content-inner">

@@ -50,7 +50,11 @@
 				<div class="preloader-wrap wrap5"></div>
 			</div> 
 		</div>
-		
+		<style>
+.DZ-theme-btn {
+    display: none !important;
+}
+</style>
 		
 		<div class="page-content">
 			<!-- inner page banner -->

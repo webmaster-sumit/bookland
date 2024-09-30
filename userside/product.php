@@ -89,6 +89,31 @@ $view = isset($_GET['view']) ? $_GET['view'] : '';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta name="description" content="Bookland-Book Store Ecommerce Website" />
+	<meta property="og:title" content="Bookland-Book Store Ecommerce Website" />
+	<meta property="og:description" content="Bookland-Book Store Ecommerce Website" />
+	<meta property="og:image" content="../../makaanlelo.com/tf_products_007/bookland/xhtml/social-image.html" />
+	<meta name="format-detection" content="telephone=no">
+
+	<!-- FAVICONS ICON -->
+	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.png" />
+
+	<!-- PAGE TITLE HERE -->
+
+	<!-- MOBILE SPECIFIC -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- STYLESHEETS -->
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="icons/fontawesome/css/all.min.css">
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap-select/dist/css/bootstrap-select.min.css">
+	<link rel="stylesheet" type="text/css" href="vendor/swiper/swiper-bundle.min.css">
+
+
+	<!-- GOOGLE FONTS-->
+	<link rel="preconnect" href="https://fonts.googleapis.com/">
+	<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&amp;family=Poppins:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
     <style>
         .product-card { 
             border: 1px solid #ddd; 
@@ -122,6 +147,22 @@ $view = isset($_GET['view']) ? $_GET['view'] : '';
 </head>
 <body>
 <?php include 'navbar.php' ?>
+<div class="page-wraper">
+	<div id="loading-area" class="preloader-wrapper-1">
+		<div class="preloader-inner">
+			<div class="preloader-shade"></div>
+			<div class="preloader-wrap"></div>
+			<div class="preloader-wrap wrap2"></div>
+			<div class="preloader-wrap wrap3"></div>
+			<div class="preloader-wrap wrap4"></div>
+			<div class="preloader-wrap wrap5"></div>
+		</div> 
+	</div>
+    <style>
+.DZ-theme-btn {
+    display: none !important;
+}
+</style>
 <div class="container">
     <!-- Display Products if not in 'cart' view -->
     <?php if ($view !== 'cart'): ?>
@@ -202,5 +243,16 @@ $view = isset($_GET['view']) ? $_GET['view'] : '';
 
 </div>
 <?php include 'footer.php' ?>
+
+<script src="js/jquery.min.js"></script><!-- JQUERY MIN JS -->
+	<script src="vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script><!-- BOOTSTRAP MIN JS -->
+	<script src="vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script><!-- BOOTSTRAP SELECT MIN JS -->
+	<script src="vendor/swiper/swiper-bundle.min.js"></script><!-- SWIPER JS -->
+	<script src="vendor/counter/waypoints-min.js"></script><!-- WAYPOINTS JS -->
+	<script src="vendor/counter/counterup.min.js"></script><!-- COUNTERUP JS -->
+	<script src="vendor/countdown/counter.js"></script><!-- COUNTER JS -->
+	<script src="js/dz.carousel.js"></script><!-- DZ CAROUSEL JS -->
+	<script src="js/dz.ajax.js"></script><!-- AJAX -->
+	<script src="js/custom.js"></script><!-- CUSTOM JS -->
 </body>
 </html>

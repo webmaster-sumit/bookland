@@ -50,7 +50,11 @@
 			<div class="preloader-wrap wrap5"></div>
 		</div> 
 	</div>
-
+<style>
+.DZ-theme-btn {
+    display: none !important;
+}
+</style>
 	
 	<div class="page-content bg-white">
 		<!--banner-->
@@ -453,8 +457,8 @@
 <script src="vendor/swiper/swiper-bundle.min.js"></script><!-- SWIPER JS -->
 <script src="vendor/counter/waypoints-min.js"></script><!-- WAYPOINTS JS -->
 <script src="vendor/counter/counterup.min.js"></script><!-- COUNTERUP JS -->
-<script src="js/dz.carousel.js"></script><!-- DZ CAROUSEL JS -->
-<script src="js/dz.ajax.js"></script><!-- AJAX -->
+<script src="js/dz.carousel.js"></script>
+<script src="js/dz.ajax.js"></script>
 <script src="js/custom.js"></script><!-- CUSTOM JS -->
 
 </body>
