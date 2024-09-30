@@ -77,14 +77,14 @@
 							<div class="col-sm-6 aos-item" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
 								<div class="split-box">
 									<div>
-										<img class="m-b30" src="images/about/about1.jpg" alt="">
+										<img class="m-b30" src="../adminside/images/about/about1.jpg" alt="image-1">
 									</div>
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="split-box ">
 									<div>
-										<img class="m-b20 aos-item" src="images/about/about2.jpg" alt="" data-aos="fade-up" data-aos-duration="800" data-aos-delay="500">
+										<img class="m-b20 aos-item" src="../adminside/images/about/about1.jpg" alt="image-2" data-aos="fade-up" data-aos-duration="800" data-aos-delay="500">
 									</div>
 								</div>
 								<div class="exp-bx aos-item"  data-aos="fade-up" data-aos-duration="800" data-aos-delay="500">
@@ -201,7 +201,7 @@
 								</div>
 								<div class="testimonial-detail">
 									<div class="testimonial-pic">
-										<img src="images/testimonial/testimonial1.jpg" alt="">
+										<img src="../adminside/images/testimonial/testimonial1.jpg" alt="image-1">
 									</div>
 									<div class="info-right">
 										<h6 class="testimonial-name">Jason Huang</h6> 
@@ -226,7 +226,7 @@
 								</div>
 								<div class="testimonial-detail">
 									<div class="testimonial-pic radius">
-										<img src="images/testimonial/testimonial2.jpg" alt="">
+										<img src="../adminside/images/testimonial/testimonial2.jpg" alt="image-2">
 									</div>
 									<div>
 										<h6 class="testimonial-name">Miranda Lee</h6> 
@@ -251,7 +251,7 @@
 								</div>
 								<div class="testimonial-detail">
 									<div class="testimonial-pic radius">
-										<img src="images/testimonial/testimonial3.jpg" alt="">
+										<img src="../adminside/images/testimonial/testimonial3.jpg" alt="image-3">
 									</div>
 									<div>
 										<h6 class="testimonial-name">Steve Henry</h6> 
@@ -276,7 +276,7 @@
 								</div>
 								<div class="testimonial-detail">
 									<div class="testimonial-pic radius">
-										<img src="images/testimonial/testimonial4.jpg" alt="">
+										<img src="../adminside/images/testimonial/testimonial4.jpg" alt="image-4">
 									</div>
 									<div>
 										<h6 class="testimonial-name">Angela Moss</h6> 
@@ -301,7 +301,7 @@
 								</div>
 								<div class="testimonial-detail">
 									<div class="testimonial-pic radius">
-										<img src="images/testimonial/testimonial2.jpg" alt="">
+										<img src="../adminside/images/testimonial/testimonial2.jpg" alt="image-5">
 									</div>
 									<div>
 										<h6 class="testimonial-name">Miranda Lee</h6> 
@@ -326,7 +326,7 @@
 								</div>
 								<div class="testimonial-detail">
 									<div class="testimonial-pic">
-										<img src="images/testimonial/testimonial1.jpg" alt="">
+										<img src="../adminside/images/testimonial/testimonial1.jpg" alt="image-6	">
 									</div>
 									<div class="info-right">
 										<h6 class="testimonial-name">Jason Huang</h6> 
@@ -400,11 +400,11 @@
 			<!--Client Swiper -->
 				<div class="swiper client-swiper">
 					<div class="swiper-wrapper">
-						<div class="swiper-slide"><img src="images/client/client1.svg" alt="client"></div>
-						<div class="swiper-slide"><img src="images/client/client2.svg" alt="client"></div>
-						<div class="swiper-slide"><img src="images/client/client3.svg" alt="client"></div>
-						<div class="swiper-slide"><img src="images/client/client4.svg" alt="client"></div>
-						<div class="swiper-slide"><img src="images/client/client5.svg" alt="client"></div>	
+						<div class="swiper-slide"><img src="../adminside/images/client/client1.svg" alt="client"></div>
+						<div class="swiper-slide"><img src="../adminside/images/client/client2.svg" alt="client"></div>
+						<div class="swiper-slide"><img src="../adminside/images/client/client3.svg" alt="client"></div>
+						<div class="swiper-slide"><img src="../adminside/images/client/client4.svg" alt="client"></div>
+						<div class="swiper-slide"><img src="../adminside/images/client/client5.svg" alt="client"></div>	
 					</div>
 				</div>
 			</div>

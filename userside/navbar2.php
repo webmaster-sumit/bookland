@@ -1,108 +1,88 @@
-
 <?php include 'conn.php'?>
 <!DOCTYPE html>
 <html lang="en">
-
-<!-- Mirrored from bookland.dexignzone.com/xhtml/shop-checkout.php by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 09 Sep 2024 10:12:06 GMT -->
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="keywords" content="" />
-	<meta name="author" content="" />
-	<meta name="robots" content="" />
-	<meta name="description" content="Bookland-Book Store Ecommerce Website"/>
-	<meta property="og:title" content="Bookland-Book Store Ecommerce Website"/>
-	<meta property="og:description" content="Bookland-Book Store Ecommerce Website"/>
-	<meta property="og:image" content="../../makaanlelo.com/tf_products_007/bookland/xhtml/social-image.php"/>
-	<meta name="format-detection" content="telephone=no">
-	
-	<!-- FAVICONS ICON -->
-	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.png" />
-	
-	<!-- PAGE TITLE HERE -->
-	<title>Bookland-Book Store Ecommerce Website</title>
-	
-	<!-- MOBILE SPECIFIC -->
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
-	<!-- STYLESHEETS -->
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<link rel="stylesheet" type="text/css" href="icons/fontawesome/css/all.min.css">
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap-select/dist/css/bootstrap-select.min.css">
-	
-	
-	<!-- GOOGLE FONTS-->
-	<link rel="preconnect" href="https://fonts.googleapis.com/">
-	<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&amp;family=Poppins:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bookland - Book Store Ecommerce Website</title>
+    
+    <!-- FAVICONS ICON -->
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png" />
+    
+    <!-- STYLESHEETS -->
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="icons/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    
+    <style>
+        /* Navbar Styles */
+        .navbar {
+            background-color: white; /* Dark background */
+        }
 
+        .navbar-brand img {
+            height: 40px; /* Logo height */
+        }
+
+        .navbar-nav .nav-link {
+            color: black; /* Link color */
+            transition: color 0.3s; /* Transition for hover effect */
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #007bff; /* Color on hover */
+            text-decoration: underline; /* Underline effect */
+        }
+
+        .navbar-toggler {
+            border-color: rgba(255, 255, 255, 0.1); /* Toggler border color */
+        }
+
+        .navbar-toggler:hover {
+            background-color: rgba(0, 123, 255, 0.2); /* Toggler background on hover */
+        }
+
+        .navbar-toggler:focus {
+            outline: none; /* Remove focus outline */
+            box-shadow: none; /* Remove box shadow */
+        }
+    </style>
 </head>
 
 <body>
-<!-- Header -->
-<header class="site-header mo-left header style-1">
-		
-		<!-- Main Header -->
-		<div class="sticky-header main-bar-wraper navbar-expand-lg">
-			<div class="main-bar clearfix">
-				<div class="container clearfix">
-					<!-- Website Logo -->
-					<div class="logo-header logo-dark">
-					<a href="index.php"><img src="../adminside/images/logo.png" alt=""></a>
-					</div>
-					
-					<!-- Nav Toggle Button -->
-					<button class="navbar-toggler collapsed navicon justify-content-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-						<span></span>
-						<span></span>
-						<span></span>
-					</button>
-					
-					<!-- EXTRA NAV -->
-					<div class="extra-nav">
-						<div class="extra-cell">
-							<a href="shop-registration.php" class="btn btn-primary btnhover">Get In Touch</a>	
-						</div>
-					</div>
-					
-					<!-- Main Nav -->
-					<div class="header-nav navbar-collapse collapse justify-content-start" id="navbarNavDropdown">
-						<div class="logo-header logo-dark">
-						<a href="index.php"><img src="../adminside/images/logo.png" alt=""></a>
-						</div>
-						<form class="search-input">
-							<div class="input-group">
-								<input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Search Books Here">
-								<button class="btn" type="button"><i class="flaticon-loupe"></i></button>
-							</div>
-						</form>
-						<ul class="nav navbar-nav">
-						<li><a href="home.php"><span>Home</span></a></li>
-							<li><a href="shop.php"><span>shop</span></a></li>
-                            
-						
-									<li><a href="shop-cart.php">Cart</a></li>
-									<li><a href="checkout.php">Checkout</a></li>
-								
-							<li><a href="contact-us.php"><span>Contact Us</span></a></li>
-							
-							<li><a href="carousel.php"><span>Slider</span></a></li>
-							<li><a href="logout.php"><span>Logout</span></a></li>
-					
-						
-						<div class="dz-social-icon">
-							<ul>
-								<li><a class="fab fa-facebook-f" target="_blank" href="https://www.facebook.com/dexignzone"></a></li>
-								<li><a class="fab fa-twitter" target="_blank" href="https://twitter.com/dexignzones"></a></li>
-								<li><a class="fab fa-linkedin-in" target="_blank" href="https://www.linkedin.com/showcase/3686700/admin/"></a></li>
-								<li><a class="fab fa-instagram" target="_blank" href="https://www.instagram.com/website_templates__/"></a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- Main Header End -->
-		
-	</header>
-	<!-- Header End -->
+    <!-- Header -->
+    <header class="site-header">
+        <!-- Main Header -->
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <!-- Website Logo -->
+                <a class="navbar-brand" href="index.php">
+                    <img src="../adminside/images/logo.png" alt="Bookland Logo">
+                </a>
+
+                <!-- Nav Toggle Button -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Main Nav -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="profile.php">Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="product.php">Shop</a></li>
+                        <li class="nav-item"><a class="nav-link" href="product.php">Cart</a></li>
+                        <li class="nav-item"><a class="nav-link" href="checkout.php">Checkout</a></li>
+                        <li class="nav-item"><a class="nav-link" href="contact-us.php">Contact Us</a></li>
+                        <li class="nav-item"><a class="nav-link" href="carousel.php">Slider</a></li>
+                        <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

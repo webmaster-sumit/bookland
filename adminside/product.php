@@ -113,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
     $publisher_name = $_POST['publisher_name'];  // New field
     $year = $_POST['year'];                      // New field
     $image_path = '';
-
+     
     // Handle image upload
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $file_tmp = $_FILES['image']['tmp_name'];

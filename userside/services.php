@@ -78,7 +78,7 @@
 									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna </p>
 								</div>
 								<div class="dz-banner-media1.jpg m-b30">
-									<img src="images/services/service2.jpg" alt="">
+									<img src="../adminside/images/services/service1.jpg" alt="iamge-1">
 								</div>
 								<div class="dz-bottom">
 									<a href="services.php" class="btn-link btnhover3">READ MORE<i class="fas fa-arrow-right m-l10"></i></a>
@@ -92,7 +92,7 @@
 									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna </p>
 								</div>
 								<div class="dz-banner-media1.jpg m-b30">
-									<img src="images/services/service1.jpg" alt="">
+									<img src="../adminside/images/services/service2.jpg" alt="image-2">
 								</div>
 								<div class="dz-bottom">
 									<a href="services.php" class="btn-link btnhover3">READ MORE<i class="fas fa-arrow-right m-l10"></i></a>
@@ -106,7 +106,7 @@
 									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna </p>
 								</div>
 								<div class="dz-banner-media1.jpg m-b30">
-									<img src="images/services/service3.jpg" alt="">
+									<img src="../adminside/images/services/service3.jpg" alt="image-3">
 								</div>
 								<div class="dz-bottom">
 									<a href="services.php" class="btn-link btnhover3">READ MORE<i class="fas fa-arrow-right m-l10"></i></a>
@@ -120,7 +120,7 @@
 									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna </p>
 								</div>
 								<div class="dz-banner-media1.jpg m-b30">
-									<img src="images/services/service4.jpg" alt="">
+									<img src="../adminside/images/services/service4.jpg" alt="image-4">
 								</div>
 								<div class="dz-bottom">
 									<a href="services.php" class="btn-link btnhover3">READ MORE<i class="fas fa-arrow-right m-l10"></i></a>
@@ -134,7 +134,7 @@
 									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna </p>
 								</div>
 								<div class="dz-banner-media1.jpg m-b30">
-									<img src="images/services/service5.jpg" alt="">
+									<img src="../adminside/images/services/service5.jpg" alt="image-5">
 								</div>
 								<div class="dz-bottom">
 									<a href="services.php" class="btn-link btnhover3">READ MORE<i class="fas fa-arrow-right m-l10"></i></a>
@@ -148,7 +148,7 @@
 									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna </p>
 								</div>
 								<div class="dz-banner-media1.jpg m-b30">
-									<img src="images/services/service6.jpg" alt="">
+									<img src="../adminside/images/services/service6.jpg" alt="image-6">
 								</div>
 								<div class="dz-bottom">
 									<a href="services.php" class="btn-link btnhover3">READ MORE<i class="fas fa-arrow-right m-l10"></i></a>
@@ -158,7 +158,6 @@
 					</div>
 				</div>
 			</section>
-			
 			
 			<!-- Feature Box -->
 			<section class="content-inner bg-light">

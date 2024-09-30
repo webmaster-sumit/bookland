@@ -90,12 +90,34 @@ $view = isset($_GET['view']) ? $_GET['view'] : '';
     <title>Shopping Cart</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        .product-card { border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
-        .product-card img { width: 100%; height: 200px; object-fit: cover; } /* Set a fixed height for uniformity */
-        .cart-table th, .cart-table td { text-align: center; }
-        .checkout-btn { background-color: #28a745; color: white; margin-top: 20px; width: 100%; }
-        .checkout-btn:hover { background-color: #218838; }
-        .product-image-link img { width: 100px; height: auto; }
+        .product-card { 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            padding: 15px; 
+            margin-bottom: 20px; 
+        }
+        .product-card img { 
+            width: 100%; 
+            height: 200px; 
+            object-fit: cover; 
+        } /* Set a fixed height for uniformity */
+        .cart-table th, .cart-table td { 
+            text-align: center; 
+        }
+        .cart-table img {
+            width: 150px; 
+            height: 150px; 
+            object-fit: cover;
+        } /* Ensure uniform cart image size */
+        .checkout-btn { 
+            background-color: #28a745; 
+            color: white; 
+            margin-top: 20px; 
+            width: 100%; 
+        }
+        .checkout-btn:hover { 
+            background-color: #218838; 
+        }
     </style>
 </head>
 <body>
@@ -150,7 +172,7 @@ $view = isset($_GET['view']) ? $_GET['view'] : '';
                                 <td>
                                     <a href="product-details.php?id=<?php echo $item['id']; ?>" class="product-image-link">
                                         <?php if (file_exists("../adminside/" . $item['image'])): ?>
-                                            <img src="../adminside/<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>" class="img-fluid" style="height: 100px; object-fit: cover;">
+                                            <img src="../adminside/<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>" class="img-fluid">
                                         <?php else: ?>
                                             <p>Image not available</p>
                                         <?php endif; ?>

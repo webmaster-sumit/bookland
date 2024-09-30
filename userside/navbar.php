@@ -77,7 +77,7 @@
 							</div>
 						</form>
 						<ul class="nav navbar-nav">
-						<li><a href="home.php"><span>Home</span></a></li>
+					
 							<li><a href="about-us.php"><span>About Us</span></a></li>
 							<li class="sub-menu-down"><a href="javascript:void(0);"><span>Pages</span></a>
 								<ul class="sub-menu">
