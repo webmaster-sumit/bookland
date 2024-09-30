@@ -27,7 +27,7 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="footer-logo">
-                        <a href="index.php"><img src="images/logo-white.png" alt="Bookland Logo" style="max-width: 100%;"></a>
+                        <a href="index.php"><img src="../adminside/images/logo-white.png" alt="Bookland Logo" style="max-width: 100%;"></a>
                     </div>
                     <p>Bookland is a Book Store Ecommerce Website Template by DexignZone. Your one-stop solution for books.</p>
                     <div class="dz-social-icon">
