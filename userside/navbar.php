@@ -81,7 +81,7 @@
 							<li><a href="about-us.php"><span>About Us</span></a></li>
 							<li class="sub-menu-down"><a href="javascript:void(0);"><span>Pages</span></a>
 								<ul class="sub-menu">
-									<li><a href="services.php">Services</a></li>
+									<li><a href="service.php">Service</a></li>
 									<li><a href="privacy-policy.php">Privacy Policy</a></li>
 									
 								</ul>

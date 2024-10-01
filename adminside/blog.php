@@ -81,8 +81,52 @@ $posts = $conn->query($query)->fetch_all(MYSQLI_ASSOC);
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background-color: #f4f7fa;
+            color: #333;
+        }
+        h1, h2 {
+            color: #007bff;
+        }
+        .container {
+            margin-top: 50px;
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .alert {
+            margin-top: 20px;
+        }
+        table th {
+            background-color: #007bff;
+            color: white;
+        }
+        table td {
+            vertical-align: middle;
+        }
+        .table img {
+            max-width: 100px;
+            border-radius: 5px;
+        }
+        .table-actions a {
+            margin-right: 5px;
+        }
+    </style>
 </head>
 <body>
+    <?php include "nav.php"?>
 <div class="container mt-5">
     <h1 class="mb-4">Manage Blog Posts</h1>
 
@@ -140,13 +184,13 @@ $posts = $conn->query($query)->fetch_all(MYSQLI_ASSOC);
             <?php foreach ($posts as $post) { ?>
                 <tr>
                     <td><?= htmlspecialchars($post['name']); ?></td>
-                    <td><img src="<?= htmlspecialchars($post['image']); ?>" alt="" width="100"></td>
+                    <td><img src="<?= htmlspecialchars($post['image']); ?>" alt=""></td>
                     <td><?= htmlspecialchars($post['description']); ?></td>
                     <td><?= htmlspecialchars($post['author']); ?></td>
                     <td><?= htmlspecialchars($post['comments']); ?></td>
                     <td><?= date('Y-m-d', strtotime($post['date'])); ?></td>
                     <td><?= htmlspecialchars($post['status']); ?></td>
-                    <td>
+                    <td class="table-actions">
                         <a href="blog.php?edit=<?= $post['id']; ?>" class="btn btn-warning btn-sm">Edit</a>
                         <a href="blog.php?delete=<?= $post['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
                         <a href="blog.php?change_status=<?= $post['id']; ?>" class="btn btn-info btn-sm">Toggle Status</a>
@@ -156,7 +200,7 @@ $posts = $conn->query($query)->fetch_all(MYSQLI_ASSOC);
         </tbody>
     </table>
 </div>
-
+<?php include "footer.php"?>
 <!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>

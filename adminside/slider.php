@@ -1,13 +1,15 @@
 <?php
-// Enable error reporting
+// conn.php - Establish database connection
+$host = 'localhost'; // Your database host
+$user = 'your_username'; // Your database username
+$password = 'your_password'; // Your database password
+$database = 'your_database'; // Your database name
 
+$mysqli = new mysqli($host, $user, $password, $database);
 
-// Include the database connection
-include 'conn.php'; // Ensure this connects using MySQLi
-
-// Check if the connection variable is set
-if (!$mysqli) {
-    die("Database connection not established.");
+// Check connection
+if ($mysqli->connect_error) {
+    die("Connection failed: " . $mysqli->connect_error);
 }
 
 // Handle insert
@@ -39,7 +41,7 @@ if (isset($_POST['update'])) {
     $image = $_FILES['image']['name'] ? $_FILES['image']['name'] : $_POST['current_image'];
 
     // Handle image upload if a new image is provided
-    if ($_FILES['image']['name']) {
+    if ($_FILES['image']['name']) {  
         $targetDir = "uploads/";
         $targetFile = $targetDir . basename($image);
         move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile);
@@ -217,28 +219,4 @@ $sliders = $result->fetch_all(MYSQLI_ASSOC);
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        function openUpdateForm(id) {
-            const row = document.querySelector(`tr[data-id='${id}']`);
-            document.getElementById('updateId').value = id;
-            document.getElementById('updateName').value = row.cells[0].innerText;
-            document.getElementById('currentImage').value = row.cells[1].querySelector('img').src.split('/').pop();
-            document.getElementById('updateStatus').value = row.cells[2].innerText.toLowerCase();
-            $('#updateModal').modal('show');
-        }
-
-        function closeUpdateForm() {
-            $('#updateModal').modal('hide');
-        }
-
-        function openInsertForm() {
-            $('#insertModal').modal('show');
-        }
-
-        function closeInsertForm() {
-            $('#insertModal').modal('hide');
-        }
-    </script>
-</body>
-</html>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></

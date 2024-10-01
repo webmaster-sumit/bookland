@@ -1,13 +1,96 @@
+<?php
+include 'conn.php';
+
+// Fetching only active services from the database
+$result = $conn->query("SELECT * FROM admin_services WHERE status = 'active'");
+$services = $result->fetch_all(MYSQLI_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bookland Footer Example</title>
+    <title>Our Services</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { margin: 0; padding: 0; background-color: #f8f9fa; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .service-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .service-item {
+            width: calc(33.333% - 20px);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .service-item:hover {
+            transform: translateY(-5px);
+        }
+        .service-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .service-image img {
+            width: 90%;
+            height: 90%;
+            object-fit: cover;
+        }
+        .service-content {
+            padding: 15px;
+        }
+        .service-content h2 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #007BFF;
+        }
+        .service-content p {
+            font-size: 1em;
+            line-height: 1.5;
+            color: #666;
+        }
+        .add-to-cart-button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .add-to-cart-button:hover {
+            background-color: #218838;
+        }
+        /* Footer Styles */
         .site-footer { background-color: #343a40; color: white; padding: 30px 0; }
         .footer-title { font-size: 1.25rem; margin-bottom: 15px; }
         .dz-social-icon ul { display: flex; padding: 0; list-style: none; }
@@ -20,6 +103,8 @@
     </style>
 </head>
 <body>
+    
+
 
     <!-- Footer Start -->
     <footer class="site-footer mt-5">
@@ -27,7 +112,9 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="footer-logo">
-                        <a href="index.php"><img src="../adminside/images/logo-white.png" alt="Bookland Logo" style="max-width: 100%;"></a>
+                        <a href="index.php">
+                            <img src="<?php echo htmlspecialchars('../adminside/images/logo-white.png'); ?>" alt="Bookland Logo" style="max-width: 100%;">
+                        </a>
                     </div>
                     <p>Bookland is a Book Store Ecommerce Website Template by DexignZone. Your one-stop solution for books.</p>
                     <div class="dz-social-icon">
@@ -41,7 +128,7 @@
                 </div>
                 <div class="col-lg-3">
                     <h5 class="footer-title">Quick Links</h5>
-                    <ul>
+                    <ul class="list-unstyled">
                         <li><a href="about-us.php">About Us</a></li>
                         <li><a href="contact-us.php">Contact Us</a></li>
                         <li><a href="privacy-policy.php">Privacy Policy</a></li>
@@ -51,7 +138,7 @@
                 </div>
                 <div class="col-lg-3">
                     <h5 class="footer-title">Resources</h5>
-                    <ul>
+                    <ul class="list-unstyled">
                         <li><a href="services.php">Download</a></li>
                         <li><a href="help-desk.php">Help Center</a></li>
                         <li><a href="shop-cart.php">Cart</a></li>
@@ -61,7 +148,7 @@
                 </div>
                 <div class="col-lg-3">
                     <h5 class="footer-title">Get in Touch</h5>
-                    <ul>
+                    <ul class="list-unstyled">
                         <li><i class="fas fa-map-marker-alt"></i> 832 Thompson Drive, San Francisco, CA 94107, US</li>
                         <li><i class="fas fa-phone"></i> +123 345 123 556</li>
                         <li><i class="fas fa-envelope"></i> support@bookland.id</li>
@@ -69,7 +156,7 @@
                 </div>
             </div>
             <div class="footer-bottom text-center">
-                <p class="copyright-text">© 2022 Bookland. All Rights Reserved. Made with <span>&hearts;</span> by <a href="https://dexignzone.com/">DexignZone</a></p>
+                <p class="copyright-text">© 2022 Bookland. All Rights Reserved. Made with <span>&hearts;</span> by <a href="https://dexignzone.com/" class="text-white">DexignZone</a></p>
             </div>
         </div>
     </footer>

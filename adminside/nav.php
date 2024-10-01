@@ -40,6 +40,7 @@ include 'conn.php';
         <a href="welcome.php">Welcome</a>
         <a href="product.php">Product</a>
         <a href="slider.php">Slider</li>
+        <a href="admin_services.php">Service</li>
         <a href="adm_login.php">Admin Login</a>
         <a href="adm_register.php">Admin Register</a>
         <a href="blog.php">Blog</a>
