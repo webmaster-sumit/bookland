@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'conn.php';
+include 'conn.php'; // Database connection file
 
 // Check if the admin is logged in
 if (!isset($_SESSION['admin_id'])) {
@@ -10,13 +10,13 @@ if (!isset($_SESSION['admin_id'])) {
 
 // Initialize message variable
 $message = '';
-$edit_mode = false; // Indicates if the form is in edit mode
-$product_to_edit = null; // Stores the product data when in edit mode
+$edit_mode = false;
+$product_to_edit = null;
 
 // Handle product deletion
 if (isset($_GET['delete_id'])) {
     $delete_id = $_GET['delete_id'];
-    
+
     // Fetch the image to delete it as well
     $stmt = $conn->prepare("SELECT image FROM products WHERE id = ?");
     $stmt->bind_param("i", $delete_id);
@@ -24,7 +24,7 @@ if (isset($_GET['delete_id'])) {
     $stmt->bind_result($image_path);
     $stmt->fetch();
     $stmt->close();
-    
+
     // Delete product from database
     $stmt = $conn->prepare("DELETE FROM products WHERE id = ?");
     $stmt->bind_param("i", $delete_id);
@@ -46,9 +46,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_product'])) {
     $name = $_POST['name'];
     $price = $_POST['price'];
     $description = $_POST['description'];
-    $author_name = $_POST['author_name'];        // New field
-    $publisher_name = $_POST['publisher_name'];  // New field
-    $year = $_POST['year'];                      // New field
+    $author_name = $_POST['author_name'];
+    $publisher_name = $_POST['publisher_name'];
+    $year = $_POST['year'];
     $image_path = '';
 
     // Check if a new image was uploaded
@@ -109,11 +109,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
     $name = $_POST['name'];
     $price = $_POST['price'];
     $description = $_POST['description'];
-    $author_name = $_POST['author_name'];        // New field
-    $publisher_name = $_POST['publisher_name'];  // New field
-    $year = $_POST['year'];                      // New field
+    $author_name = $_POST['author_name'];
+    $publisher_name = $_POST['publisher_name'];
+    $year = $_POST['year'];
     $image_path = '';
-     
+
     // Handle image upload
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $file_tmp = $_FILES['image']['tmp_name'];
@@ -123,9 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
 
         if (in_array($file_ext, $allowed_exts)) {
             $image_path = 'uploads/' . uniqid() . '.' . $file_ext;
-            if (move_uploaded_file($file_tmp, $image_path)) {
-                // Image successfully uploaded
-            } else {
+            if (!move_uploaded_file($file_tmp, $image_path)) {
                 $message = "Failed to upload image.";
                 $image_path = ''; // Reset image path on failure
             }
@@ -147,6 +145,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
     } else {
         $message = "Please fill out all required fields.";
     }
+}
+
+// Handle status toggle
+if (isset($_GET['toggle_status_id'])) {
+    $toggle_id = $_GET['toggle_status_id'];
+    $stmt = $conn->prepare("SELECT status FROM products WHERE id = ?");
+    $stmt->bind_param("i", $toggle_id);
+    $stmt->execute();
+    $stmt->bind_result($current_status);
+    $stmt->fetch();
+    $stmt->close();
+
+    $new_status = ($current_status === 'active') ? 'inactive' : 'active';
+    $stmt = $conn->prepare("UPDATE products SET status = ? WHERE id = ?");
+    $stmt->bind_param("si", $new_status, $toggle_id);
+    if ($stmt->execute()) {
+        $message = "Product status updated to " . ucfirst($new_status) . ".";
+    } else {
+        $message = "Failed to update product status.";
+    }
+    $stmt->close();
 }
 
 // Fetch all products
@@ -197,90 +216,94 @@ if (isset($_GET['edit_id'])) {
         <?php endif; ?>
 
         <!-- Add/Edit Product Form -->
-        <div class="card mb-4">
-            <div class="card-header"><?php echo $edit_mode ? 'Edit Product' : 'Add Product'; ?></div>
-            <div class="card-body">
-                <form action="product.php" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="product_id" value="<?php echo $edit_mode ? $product_to_edit['id'] : ''; ?>">
-                    <div class="form-group">
-                        <label for="name">Product Name</label>
-                        <input type="text" class="form-control" id="name" name="name" value="<?php echo $edit_mode ? $product_to_edit['name'] : ''; ?>" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="price">Price</label>
-                        <input type="number" class="form-control" id="price" name="price" step="0.01" value="<?php echo $edit_mode ? $product_to_edit['price'] : ''; ?>" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea class="form-control" id="description" name="description" rows="3"><?php echo $edit_mode ? $product_to_edit['description'] : ''; ?></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="author_name">Author Name</label>
-                        <input type="text" class="form-control" id="author_name" name="author_name" value="<?php echo $edit_mode ? $product_to_edit['author_name'] : ''; ?>">
-                    </div>
-                    <div class="form-group">
-                        <label for="publisher_name">Publisher Name</label>
-                        <input type="text" class="form-control" id="publisher_name" name="publisher_name" value="<?php echo $edit_mode ? $product_to_edit['publisher_name'] : ''; ?>">
-                    </div>
-                    <div class="form-group">
-                        <label for="year">Year</label>
-                        <input type="number" class="form-control" id="year" name="year" value="<?php echo $edit_mode ? $product_to_edit['year'] : ''; ?>">
-                    </div>
-                    <div class="form-group">
-                        <label for="image">Product Image</label>
-                        <input type="file" class="form-control-file" id="image" name="image">
-                        <?php if ($edit_mode && $product_to_edit['image'] && file_exists($product_to_edit['image'])): ?>
-                            <img src="<?php echo $product_to_edit['image']; ?>" alt="Product Image" class="img-thumbnail mt-2">
-                        <?php endif; ?>
-                    </div>
-                    <button type="submit" class="btn btn-primary" name="<?php echo $edit_mode ? 'update_product' : 'add_product'; ?>">
-                        <?php echo $edit_mode ? 'Update Product' : 'Add Product'; ?>
-                    </button>
-                </form>
+        <form action="" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="product_id" value="<?php echo $edit_mode ? $product_to_edit['id'] : ''; ?>">
+            <div class="form-group">
+                <label for="name">Product Name</label>
+                <input type="text" class="form-control" name="name" value="<?php echo $edit_mode ? $product_to_edit['name'] : ''; ?>" required>
             </div>
-        </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="text" class="form-control" name="price" value="<?php echo $edit_mode ? $product_to_edit['price'] : ''; ?>" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" name="description" required><?php echo $edit_mode ? $product_to_edit['description'] : ''; ?></textarea>
+            </div>
+            <div class="form-group">
+                <label for="author_name">Author Name</label>
+                <input type="text" class="form-control" name="author_name" value="<?php echo $edit_mode ? $product_to_edit['author_name'] : ''; ?>">
+            </div>
+            <div class="form-group">
+                <label for="publisher_name">Publisher Name</label>
+                <input type="text" class="form-control" name="publisher_name" value="<?php echo $edit_mode ? $product_to_edit['publisher_name'] : ''; ?>">
+            </div>
+            <div class="form-group">
+                <label for="year">Year</label>
+                <input type="number" class="form-control" name="year" value="<?php echo $edit_mode ? $product_to_edit['year'] : ''; ?>">
+            </div>
+            <div class="form-group">
+                <label for="image">Product Image</label>
+                <input type="file" class="form-control" name="image" accept="image/*">
+                <?php if ($edit_mode && $product_to_edit['image']): ?>
+                    <img src="<?php echo htmlspecialchars($product_to_edit['image']); ?>" alt="Product Image" class="img-thumbnail">
+                <?php endif; ?>
+            </div>
+            <button type="submit" class="btn btn-primary" name="<?php echo $edit_mode ? 'update_product' : 'add_product'; ?>">
+                <?php echo $edit_mode ? 'Update Product' : 'Add Product'; ?>
+            </button>
+            <?php if ($edit_mode): ?>
+                <a href="product.php" class="btn btn-secondary">Cancel</a>
+            <?php endif; ?>
+        </form>
 
-        <!-- Product List Table -->
+        <!-- Product List -->
+        <h2 class="mt-5">Product List</h2>
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>Serial No.</th>
                     <th>Name</th>
                     <th>Price</th>
                     <th>Description</th>
-                    <th>Author</th>       <!-- New column -->
-                    <th>Publisher</th>    <!-- New column -->
-                    <th>Year</th>         <!-- New column -->
                     <th>Image</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <?php while ($row = $result->fetch_assoc()): ?>
+                <?php if ($result->num_rows > 0): ?>
+                    <?php $serial_no = 1; // Initialize the serial number ?>
+                    <?php while ($product = $result->fetch_assoc()): ?>
+                        <tr>
+                            <td><?php echo $serial_no++; ?></td> <!-- Increment serial number for each row -->
+                            <td><?php echo htmlspecialchars($product['name']); ?></td>
+                            <td><?php echo htmlspecialchars($product['price']); ?></td>
+                            <td><?php echo htmlspecialchars($product['description']); ?></td>
+                            <td>
+                                <?php if ($product['image']): ?>
+                                    <img src="<?php echo htmlspecialchars($product['image']); ?>" alt="Product Image" class="img-thumbnail">
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <a href="?edit_id=<?php echo htmlspecialchars($product['id']); ?>" class="btn btn-warning">Edit</a>
+                                <a href="?delete_id=<?php echo htmlspecialchars($product['id']); ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
+                                <a href="?toggle_status_id=<?php echo htmlspecialchars($product['id']); ?>" class="btn btn-info">
+                                    <?php echo $product['status'] === 'active' ? 'Deactivate' : 'Activate'; ?>
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
+                <?php else: ?>
                     <tr>
-                        <td><?php echo $row['id']; ?></td>
-                        <td><?php echo $row['name']; ?></td>
-                        <td><?php echo $row['price']; ?></td>
-                        <td><?php echo $row['description']; ?></td>
-                        <td><?php echo $row['author_name']; ?></td>       <!-- New field -->
-                        <td><?php echo $row['publisher_name']; ?></td>    <!-- New field -->
-                        <td><?php echo $row['year']; ?></td>              <!-- New field -->
-                        <td>
-                            <?php if ($row['image'] && file_exists($row['image'])): ?>
-                                <img src="<?php echo $row['image']; ?>" alt="Product Image" class="img-thumbnail">
-                            <?php else: ?>
-                                No Image
-                            <?php endif; ?>
-                        </td>
-                        <td>
-                            <!-- Update and Delete Actions -->
-                            <a href="product.php?edit_id=<?php echo $row['id']; ?>" class="btn btn-primary btn-sm">Edit</a>
-                            <a href="product.php?delete_id=<?php echo $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
-                        </td>
+                        <td colspan="6" class="text-center">No products found.</td>
                     </tr>
-                <?php endwhile; ?>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

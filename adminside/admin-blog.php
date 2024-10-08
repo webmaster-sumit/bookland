@@ -54,7 +54,7 @@ if (isset($_GET['delete_id'])) {
 }
 
 // Fetch all blog posts for displaying in the admin area
-$result = $conn->query("SELECT * FROM blog ORDER BY created_at DESC");
+$result = $conn->query("SELECT * FROM blog ORDER BY id DESC");
 $blogs = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 
@@ -124,7 +124,7 @@ $blogs = $result->fetch_all(MYSQLI_ASSOC);
             <?php foreach ($blogs as $blog): ?>
                 <tr>
                     <td><?php echo htmlspecialchars($blog['id']); ?></td>
-                    <td><?php echo htmlspecialchars($blog['title']); ?></td>
+                    <td><?php echo htmlspecialchars($blog['name']); ?></td>
                     <td><?php echo htmlspecialchars($blog['author']); ?></td>
                     <td><?php echo htmlspecialchars($blog['status']); ?></td>
                     <td>

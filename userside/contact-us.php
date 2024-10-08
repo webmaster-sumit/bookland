@@ -1,6 +1,17 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+session_start();
+
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    // User is not logged in, redirect to login page
+    header("Location: shop-login.php");
+    exit();
+}
+
+// User is logged in, you can display their profile information here
+$user_id = $_SESSION['user_id'];
+$email = $_SESSION['email'];
+
 include "conn.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -111,7 +122,7 @@ $conn->close(); // Database connection close
     </style>
 </head>
 <body>
-    <?php include "navbar.php" ?>
+    <?php include "navbar2.php" ?>
     <div class="container">
         <h2 class="text-center">Contact Us</h2>
         <form action="contact-us.php" method="POST" class="mt-4">
@@ -132,10 +143,11 @@ $conn->close(); // Database connection close
                 <label for="message">Message:</label>
                 <textarea id="message" name="message" class="form-control" rows="4" placeholder="Type your message here" required></textarea>
             </div>
-            <button type="submit" class="btn btn-custom btn-block">
-                <span class="icon"><i class="fas fa-paper-plane"></i></span>
-                Submit
-            </button>
+            <button type="submit" class="btn btn-lg btn-success btn-block checkout-btn">
+    <span class="icon"><i class="fas fa-paper-plane"></i></span>
+    Submit
+</button>
+
         </form>
     </div>
     <?php include "footer.php" ?>

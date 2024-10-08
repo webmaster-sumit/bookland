@@ -10,10 +10,8 @@
             color: white;
             text-align: center;
             padding: 20px 0;
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 100%;
+            width: 100%; /* Ensure footer takes full width */
+            position: relative; /* Changed from fixed to relative */
         }
 
         footer p {

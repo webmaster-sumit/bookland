@@ -1,15 +1,18 @@
 <?php
-// conn.php - Establish database connection
-$host = 'localhost'; // Your database host
-$user = 'your_username'; // Your database username
-$password = 'your_password'; // Your database password
-$database = 'your_database'; // Your database name
+session_start();
+include 'conn.php';
 
-$mysqli = new mysqli($host, $user, $password, $database);
+// Check if the admin is logged in
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: adm_login.php");
+    exit();
+}
+
+error_reporting(0);
 
 // Check connection
-if ($mysqli->connect_error) {
-    die("Connection failed: " . $mysqli->connect_error);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
 // Handle insert
@@ -23,7 +26,7 @@ if (isset($_POST['insert'])) {
     $targetFile = $targetDir . basename($image);
     move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile);
 
-    $stmt = $mysqli->prepare("INSERT INTO slider (name, image, status) VALUES (?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO slider (name, image, status) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $name, $image, $status);
     $stmt->execute();
     $stmt->close();
@@ -47,7 +50,7 @@ if (isset($_POST['update'])) {
         move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile);
     }
 
-    $stmt = $mysqli->prepare("UPDATE slider SET name = ?, image = ?, status = ? WHERE id = ?");
+    $stmt = $conn->prepare("UPDATE slider SET name = ?, image = ?, status = ? WHERE id = ?");
     $stmt->bind_param("sssi", $name, $image, $status, $id);
     $stmt->execute();
     $stmt->close();
@@ -58,7 +61,7 @@ if (isset($_POST['update'])) {
 // Handle delete
 if (isset($_POST['delete'])) {
     $id = $_POST['id'];
-    $stmt = $mysqli->prepare("DELETE FROM slider WHERE id = ?");
+    $stmt = $conn->prepare("DELETE FROM slider WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $stmt->close();
@@ -67,11 +70,15 @@ if (isset($_POST['delete'])) {
 }
 
 // Fetch sliders
-$result = $mysqli->query("SELECT * FROM slider");
-if ($result === false) {
-    die("Error fetching sliders: " . $mysqli->error);
+$result2 = "SELECT * FROM slider";
+$query = mysqli_query($conn, $result2);
+if ($query === false) {
+    die("Error fetching sliders");
 }
-$sliders = $result->fetch_all(MYSQLI_ASSOC);
+$sliders = [];
+while ($row = mysqli_fetch_assoc($query)) {
+    $sliders[] = $row;
+}
 ?>
 
 <!DOCTYPE html>
@@ -81,6 +88,7 @@ $sliders = $result->fetch_all(MYSQLI_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Slider Management</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #f8f9fa;
@@ -93,31 +101,39 @@ $sliders = $result->fetch_all(MYSQLI_ASSOC);
             border-radius: 8px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
-        h1 {
-            color: #343a40;
-        }
         .user-image {
-            width: 60px;
+            width: 100px; /* Increase image size */
             height: 60px;
             border-radius: 8px;
+            object-fit: cover;
         }
         .status.active {
             color: green;
+            font-weight: bold;
         }
         .status.inactive {
             color: red;
+            font-weight: bold;
         }
         .modal-header {
-            background-color: #007bff;
+            background-color: #007bff; /* Bootstrap primary color */
             color: white;
+        }
+        .modal-footer .btn {
+            background-color: #28a745; /* Bootstrap success color */
+        }
+        .modal-footer .btn:hover {
+            background-color: #218838; /* Darker green on hover */
         }
     </style>
 </head>
 <body>
-<?php include 'nav.php'; ?>
+    <?php include 'nav.php'; ?>
     <div class="container">
-        <h1 class="text-center">Slider Management</h1>
-        <button class="btn btn-primary mb-3" onclick="openInsertForm()">Add Slider</button>
+        <h1 class="text-center mb-4">Slider Management</h1>
+        <button class="btn btn-primary mb-3" onclick="$('#insertModal').modal('show')">
+            <i class="fas fa-plus-circle"></i> Add Slider
+        </button>
         <table class="table table-bordered">
             <thead class="thead-light">
                 <tr>
@@ -129,16 +145,19 @@ $sliders = $result->fetch_all(MYSQLI_ASSOC);
             </thead>
             <tbody>
                 <?php foreach ($sliders as $slider): ?>
-                <tr data-id="<?php echo $slider['id']; ?>">
+                <tr>
                     <td><?php echo htmlspecialchars($slider['name']); ?></td>
                     <td><img src="uploads/<?php echo htmlspecialchars($slider['image']); ?>" alt="<?php echo htmlspecialchars($slider['name']); ?>" class="user-image"></td>
                     <td class="status <?php echo htmlspecialchars($slider['status']); ?>"><?php echo htmlspecialchars(ucfirst($slider['status'])); ?></td>
                     <td>
+                        <button type="button" class="btn btn-warning btn-sm" onclick="openUpdateForm(<?php echo htmlspecialchars(json_encode($slider)); ?>)">
+                            <i class="fas fa-edit"></i> Update
+                        </button>
                         <form method="post" action="" style="display:inline;">
                             <input type="hidden" name="id" value="<?php echo $slider['id']; ?>">
-                            <input type="hidden" name="current_image" value="<?php echo htmlspecialchars($slider['image']); ?>">
-                            <button type="button" class="btn btn-warning btn-sm" onclick="openUpdateForm(<?php echo $slider['id']; ?>)">Update</button>
-                            <button type="submit" name="delete" class="btn btn-danger btn-sm">Delete</button>
+                            <button type="submit" name="delete" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
                         </form>
                     </td>
                 </tr>
@@ -152,9 +171,7 @@ $sliders = $result->fetch_all(MYSQLI_ASSOC);
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Update Slider</h5>
-                        <button type="button" class="close" onclick="closeUpdateForm()">
-                            <span>&times;</span>
-                        </button>
+                        <button type="button" class="close" onclick="$('#updateModal').modal('hide')">&times;</button>
                     </div>
                     <div class="modal-body">
                         <form method="post" id="updateForm" enctype="multipart/form-data">
@@ -188,9 +205,7 @@ $sliders = $result->fetch_all(MYSQLI_ASSOC);
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Add Slider</h5>
-                        <button type="button" class="close" onclick="closeInsertForm()">
-                            <span>&times;</span>
-                        </button>
+                        <button type="button" class="close" onclick="$('#insertModal').modal('hide')">&times;</button>
                     </div>
                     <div class="modal-body">
                         <form method="post" id="insertForm" enctype="multipart/form-data">
@@ -219,4 +234,16 @@ $sliders = $result->fetch_all(MYSQLI_ASSOC);
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function openUpdateForm(slider) {
+            $('#updateId').val(slider.id);
+            $('#updateName').val(slider.name);
+            $('#updateStatus').val(slider.status);
+            $('#currentImage').val(slider.image);
+            $('#updateModal').modal('show');
+        }
+    </script>
+    <?php include "footer.php"?>
+</body>
+</html>

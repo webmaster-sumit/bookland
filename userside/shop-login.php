@@ -1,44 +1,56 @@
 <?php
-include 'conn.php';
 session_start();
+
+// Redirect to profile if the user is already logged in
+if (isset($_SESSION['user_id'])) {
+    header("Location: profile.php");
+    exit();
+}
+include 'conn.php';
+
 
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Collecting data from the form
-    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    // Collecting and sanitizing data from the form
+    $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
     $password = $_POST['password'];
 
     // Prepared statement to check user credentials
-    $stmt = $conn->prepare("SELECT id, email, password FROM users WHERE email = ?");
-    $stmt->bind_param('s', $email);
-    $stmt->execute();
-    $stmt->store_result();
+    if ($stmt = $conn->prepare("SELECT id, email, password FROM users WHERE email = ?")) {
+        $stmt->bind_param('s', $email);
+        $stmt->execute();
+        $stmt->store_result();
 
-    if ($stmt->num_rows === 1) {
-        $stmt->bind_result($user_id, $user_email, $hashed_password);
-        $stmt->fetch();
+        if ($stmt->num_rows === 1) {
+            $stmt->bind_result($user_id, $user_email, $hashed_password);
+            $stmt->fetch();
 
-        // Verify the password
-        if (password_verify($password, $hashed_password)) {
-            // Start session and store user information
-            $_SESSION['user_id'] = $user_id;
-            $_SESSION['email'] = $user_email;
-            // Redirect to a dashboard or another page
-            header("Location: profile.php");
-            exit();
+            // Verify the password
+            if (password_verify($password, $hashed_password)) {
+                // Start session and store user information
+                $_SESSION['user_id'] = $user_id;
+                $_SESSION['email'] = $user_email;
+
+                // Redirect to profile page (implementing PRG)
+                header("Location: profile.php");
+                exit();
+            } else {
+                $error = "Invalid password!";
+            }
         } else {
-            $error = "Invalid password!";
+            $error = "No account found with that email!";
         }
-    } else {
-        $error = "No account found with that email!";
-    }
 
-    $stmt->close();
+        $stmt->close();
+    } else {
+        $error = "Database query error!";
+    }
 }
 
 $conn->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

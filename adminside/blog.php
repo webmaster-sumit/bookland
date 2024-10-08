@@ -1,6 +1,12 @@
 <?php
-// Connection to MySQL
-include 'conn.php'; // Assuming conn.php contains $conn (MySQLi or PDO connection)
+session_start();
+include 'conn.php';
+
+// Check if the admin is logged in
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: adm_login.php");
+    exit();
+}
 
 // Handle form submission for adding or updating blog posts
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -90,7 +96,7 @@ $posts = $conn->query($query)->fetch_all(MYSQLI_ASSOC);
             color: #007bff;
         }
         .container {
-            margin-top: 50px;
+            margin-top: 70px; /* Space for fixed navbar */
             background: white;
             border-radius: 8px;
             padding: 30px;
@@ -126,84 +132,84 @@ $posts = $conn->query($query)->fetch_all(MYSQLI_ASSOC);
     </style>
 </head>
 <body>
-    <?php include "nav.php"?>
-<div class="container mt-5">
-    <h1 class="mb-4">Manage Blog Posts</h1>
+    <?php include "nav.php"; ?>
+    <div class="container mt-5">
+        <h1 class="mb-4">Manage Blog Posts</h1>
 
-    <!-- Form to Add / Edit Blog Post -->
-    <form action="blog.php" method="post" enctype="multipart/form-data" class="mb-4">
-        <input type="hidden" name="id" value="<?= isset($_GET['edit']) ? $_GET['edit'] : ''; ?>">
-        <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" name="name" id="name" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="image">Image:</label>
-            <input type="file" name="image" id="image" class="form-control-file">
-        </div>
-        <div class="form-group">
-            <label for="description">Description:</label>
-            <textarea name="description" id="description" class="form-control" required></textarea>
-        </div>
-        <div class="form-group">
-            <label for="author">Author:</label>
-            <input type="text" name="author" id="author" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="comments">Comments:</label>
-            <textarea name="comments" id="comments" class="form-control"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="status">Status:</label>
-            <select name="status" id="status" class="form-control">
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Save</button>
-    </form>
+        <!-- Form to Add / Edit Blog Post -->
+        <form action="blog.php" method="post" enctype="multipart/form-data" class="mb-4">
+            <input type="hidden" name="id" value="<?= isset($_GET['edit']) ? $_GET['edit'] : ''; ?>">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="image">Image:</label>
+                <input type="file" name="image" id="image" class="form-control-file">
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea name="description" id="description" class="form-control" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="author">Author:</label>
+                <input type="text" name="author" id="author" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="comments">Comments:</label>
+                <textarea name="comments" id="comments" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="status">Status:</label>
+                <select name="status" id="status" class="form-control">
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
 
-    <hr>
+        <hr>
 
-    <!-- Display All Blog Posts -->
-    <h2>All Blog Posts</h2>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Image</th>
-                <th>Description</th>
-                <th>Author</th>
-                <th>Comments</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($posts as $post) { ?>
+        <!-- Display All Blog Posts -->
+        <h2>All Blog Posts</h2>
+        <table class="table table-bordered">
+            <thead>
                 <tr>
-                    <td><?= htmlspecialchars($post['name']); ?></td>
-                    <td><img src="<?= htmlspecialchars($post['image']); ?>" alt=""></td>
-                    <td><?= htmlspecialchars($post['description']); ?></td>
-                    <td><?= htmlspecialchars($post['author']); ?></td>
-                    <td><?= htmlspecialchars($post['comments']); ?></td>
-                    <td><?= date('Y-m-d', strtotime($post['date'])); ?></td>
-                    <td><?= htmlspecialchars($post['status']); ?></td>
-                    <td class="table-actions">
-                        <a href="blog.php?edit=<?= $post['id']; ?>" class="btn btn-warning btn-sm">Edit</a>
-                        <a href="blog.php?delete=<?= $post['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
-                        <a href="blog.php?change_status=<?= $post['id']; ?>" class="btn btn-info btn-sm">Toggle Status</a>
-                    </td>
+                    <th>Name</th>
+                    <th>Image</th>
+                    <th>Description</th>
+                    <th>Author</th>
+                    <th>Comments</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                 </tr>
-            <?php } ?>
-        </tbody>
-    </table>
-</div>
-<?php include "footer.php"?>
-<!-- Bootstrap JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            </thead>
+            <tbody>
+                <?php foreach ($posts as $post) { ?>
+                    <tr>
+                        <td><?= htmlspecialchars($post['name']); ?></td>
+                        <td><img src="<?= htmlspecialchars($post['image']); ?>" alt=""></td>
+                        <td><?= htmlspecialchars($post['description']); ?></td>
+                        <td><?= htmlspecialchars($post['author']); ?></td>
+                        <td><?= htmlspecialchars($post['comments']); ?></td>
+                        <td><?= date('Y-m-d', strtotime($post['date'])); ?></td>
+                        <td><?= htmlspecialchars($post['status']); ?></td>
+                        <td class="table-actions">
+                            <a href="blog.php?edit=<?= $post['id']; ?>" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="blog.php?delete=<?= $post['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
+                            <a href="blog.php?change_status=<?= $post['id']; ?>" class="btn btn-info btn-sm">Toggle Status</a>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
+    <?php include "footer.php"; ?>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

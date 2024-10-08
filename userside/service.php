@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'conn.php';
 
 // Fetching only active services from the database
@@ -113,7 +114,6 @@ $services = $result->fetch_all(MYSQLI_ASSOC);
         <!-- Services List -->
         <div class="service-list">
             <?php if (count($services) > 0): ?>
-               
                 <?php foreach ($services as $service): ?>
                     <div class="service-item">
                         <?php if ($service['image']): ?>
@@ -125,7 +125,7 @@ $services = $result->fetch_all(MYSQLI_ASSOC);
                             <h2><?php echo htmlspecialchars($service['title']); ?></h2>
                             <p><?php echo nl2br(htmlspecialchars($service['description'])); ?></p>
                             <!-- Add to Cart Button -->
-                            <a href="product.php?service_id=<?php echo htmlspecialchars($service['id']); ?>" class="add-to-cart-button">Add to Cart</a>
+                            <a href="<?php echo isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] ? 'product.php?service_id=' . htmlspecialchars($service['id']) : 'shop-login.php'; ?>" class="add-to-cart-button">Add to Cart</a>
                         </div>
                     </div>
                 <?php endforeach; ?>

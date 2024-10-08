@@ -20,7 +20,7 @@
         .navbar {
             background-color: white; /* Dark background */
         }
-
+            
         .navbar-brand img {
             height: 40px; /* Logo height */
         }
@@ -70,11 +70,10 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" href="profile.php">Profile</a></li>
-                        <li class="nav-item"><a class="nav-link" href="product.php">Shop</a></li>
-                        <li class="nav-item"><a class="nav-link" href="product.php">Cart</a></li>
+                        <li class="nav-item"><a class="nav-link" href="shoping.php">shpoing</a></li>
                         <li class="nav-item"><a class="nav-link" href="checkout.php">Checkout</a></li>
                         <li class="nav-item"><a class="nav-link" href="contact-us.php">Contact Us</a></li>
-                        <li class="nav-item"><a class="nav-link" href="carousel.php">Slider</a></li>
+                  
                         <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
                     </ul>
                 </div>

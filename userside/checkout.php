@@ -1,11 +1,18 @@
 <?php
 session_start();
-include 'conn.php';  // Adjust the path to conn.php if necessary
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    // User is not logged in, redirect to login page
+    header("Location: shop-login.php");
+    exit();
 }
+
+// User is logged in, you can display their profile information here
+$user_id = $_SESSION['user_id'];
+$email = $_SESSION['email'];
+
+include 'conn.php';
 
 // Function to calculate total price
 function calculate_total() {
@@ -204,7 +211,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <label for="customer_phone">Phone</label>
                 <input type="text" name="customer_phone" id="customer_phone" class="form-control" required pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number" placeholder="Your Phone Number">
             </div>
-            <button type="submit" class="btn btn-success btn-block">Place Order</button>
+            <button type="submit" name="place_order" class="btn btn-lg btn-success btn-block checkout-btn">
+    <i class="fas fa-shopping-cart"></i> Place Order
+</button>
+
         </form>
 
         <div class="loading-indicator">

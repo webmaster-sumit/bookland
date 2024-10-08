@@ -37,13 +37,8 @@ include 'conn.php';
 </head>
 <body>
     <div class="navbar">
-        <a href="welcome.php">Welcome</a>
-        <a href="product.php">Product</a>
-        <a href="slider.php">Slider</li>
-        <a href="admin_services.php">Service</li>
-        <a href="blog.php">Blog</a>
-        <a href="admin-dashboard.php">Dashboard</a>
-        <a href="logout.php">logout</a>
+        <a href="adm_login.php">login</a>
+        <a href="adm_register.php">register</a>
     </div>
 </body>
 </html>

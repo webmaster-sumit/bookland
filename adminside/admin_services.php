@@ -1,5 +1,13 @@
 <?php
+session_start();
 include 'conn.php';
+
+// Check if the admin is logged in
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: adm_login.php");
+    exit();
+}
+
 
 // Delete request handle kar rahe hain
 if (isset($_GET['delete_id'])) {

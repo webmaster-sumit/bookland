@@ -1,5 +1,4 @@
 <?php
-// Include the database connection
 include 'conn.php';
 
 $error = ''; // Initialize an error message variable
@@ -57,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<?php include 'nav.php'?>
+<?php include 'nav1.php'?>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-5 col-md-7">
@@ -94,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <div class="card-footer text-center">
                         <p><a href="adm_login.php">Already have an account? Login here</a></p>
-                        <p><a href="shop-login.php">Go back to Shop Login</a></p>
+                        
                     </div>
                 </div>
             </div>

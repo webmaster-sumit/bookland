@@ -1,14 +1,19 @@
 <?php
 session_start();
 
-// Include the database connection file
-require 'conn.php';
-
-// Check if the user is authenticated
+// Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php'); // Redirect to login if user is not authenticated
+    // User is not logged in, redirect to login page
+    header("Location: shop-login.php");
     exit();
 }
+
+// User is logged in, you can display their profile information here
+$user_id = $_SESSION['user_id'];
+$email = $_SESSION['email'];
+
+// Include the database connection file
+require 'conn.php';
 
 // Fetch user data from the database
 $userId = $_SESSION['user_id'];
@@ -23,6 +28,7 @@ if ($result->num_rows === 0) {
 }
 
 $user = $result->fetch_assoc();
+$updated = false; // Flag to check if the profile was updated
 
 // Update user data if form is submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -71,41 +77,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         if ($updateStmt->execute()) {
             $_SESSION['name'] = $newName; // Update session variable
-            header('Location: profile.php'); // Redirect to profile page after successful update
-            exit();
+            $updated = true; // Set the updated flag to true
+            // Fetch updated user data
+            $stmt->execute(); // Re-execute to get the latest user info
+            $result = $stmt->get_result();
+            $user = $result->fetch_assoc(); // Get the updated user info
         } else {
             echo "Error updating profile!";
-        }
-    }
-
-    if (isset($_POST['change_password'])) {
-        $currentPassword = $_POST['current_password'];
-        $newPassword = $_POST['new_password'];
-        $confirmPassword = $_POST['confirm_password'];
-
-        // Verify current password
-        $passwordStmt = $conn->prepare("SELECT password FROM users WHERE id = ?");
-        $passwordStmt->bind_param("i", $userId);
-        $passwordStmt->execute();
-        $passwordResult = $passwordStmt->get_result();
-        $passwordData = $passwordResult->fetch_assoc();
-
-        if (password_verify($currentPassword, $passwordData['password'])) {
-            if ($newPassword === $confirmPassword) {
-                $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-                $updatePasswordStmt = $conn->prepare("UPDATE users SET password = ? WHERE id = ?");
-                $updatePasswordStmt->bind_param("si", $hashedPassword, $userId);
-
-                if ($updatePasswordStmt->execute()) {
-                    echo "Password updated successfully!";
-                } else {
-                    echo "Error updating password!";
-                }
-            } else {
-                echo "New password and confirmation do not match!";
-            }
-        } else {
-            echo "Current password is incorrect!";
         }
     }
 }
@@ -125,6 +103,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             object-fit: cover;
             border-radius: 50%;
         }
+        .container {
+            margin-bottom: 100px; /* Increased bottom margin for more space before footer */
+        }
     </style>
 </head>
 <body>
@@ -138,6 +119,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <p><?php echo htmlspecialchars($user['email']); ?></p>
             </div>
             <div class="col-md-8">
+                <?php if ($updated): ?>
+                    <div class="alert alert-success" role="alert">
+                        Profile updated successfully!
+                    </div>
+                <?php endif; ?>
+
+                <h2>User Details</h2>
+                <div class="user-details">
+                    <p><strong>Name:</strong> <?php echo htmlspecialchars($user['name']); ?></p>
+                    <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
+                    <p><strong>Phone Number:</strong> <?php echo htmlspecialchars($user['phone']); ?></p>
+                    <p><strong>Address:</strong> <?php echo htmlspecialchars($user['address']); ?></p>
+                    <p><strong>Bio:</strong> <?php echo htmlspecialchars($user['bio']); ?></p>
+                </div>
+                
                 <h2>Edit Profile</h2>
                 <form method="POST" enctype="multipart/form-data">
                     <div class="mb-3">
@@ -166,27 +162,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                     <div class="d-grid">
                         <button type="submit" class="btn btn-primary" name="update_profile">Update Profile</button>
-                    </div>
-                </form>
-
-                <hr>
-
-                <h2>Change Password</h2>
-                <form method="POST">
-                    <div class="mb-3">
-                        <label for="current_password" class="form-label">Current Password</label>
-                        <input type="password" class="form-control" id="current_password" name="current_password" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="new_password" class="form-label">New Password</label>
-                        <input type="password" class="form-control" id="new_password" name="new_password" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="confirm_password" class="form-label">Confirm New Password</label>
-                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
-                    </div>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-warning" name="change_password">Change Password</button>
                     </div>
                 </form>
             </div>
