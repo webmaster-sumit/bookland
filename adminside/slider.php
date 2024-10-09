@@ -69,8 +69,8 @@ if (isset($_POST['delete'])) {
     exit();
 }
 
-// Fetch sliders
-$result2 = "SELECT * FROM slider";
+// Fetch sliders (ORDER BY id DESC to get the latest first)
+$result2 = "SELECT * FROM slider ORDER BY id DESC";
 $query = mysqli_query($conn, $result2);
 if ($query === false) {
     die("Error fetching sliders");
@@ -137,6 +137,7 @@ while ($row = mysqli_fetch_assoc($query)) {
         <table class="table table-bordered">
             <thead class="thead-light">
                 <tr>
+                    <th>Serial No.</th> <!-- Added for serial number -->
                     <th>Name</th>
                     <th>Image</th>
                     <th>Status</th>
@@ -144,8 +145,12 @@ while ($row = mysqli_fetch_assoc($query)) {
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($sliders as $slider): ?>
+                <?php 
+                $serial_number = 1; // Initialize serial number
+                foreach ($sliders as $slider): 
+                ?>
                 <tr>
+                    <td><?php echo $serial_number++; ?></td> <!-- Display serial number -->
                     <td><?php echo htmlspecialchars($slider['name']); ?></td>
                     <td><img src="uploads/<?php echo htmlspecialchars($slider['image']); ?>" alt="<?php echo htmlspecialchars($slider['name']); ?>" class="user-image"></td>
                     <td class="status <?php echo htmlspecialchars($slider['status']); ?>"><?php echo htmlspecialchars(ucfirst($slider['status'])); ?></td>

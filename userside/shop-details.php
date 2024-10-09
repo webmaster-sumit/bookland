@@ -2,11 +2,6 @@
 session_start();
 include 'conn.php';  // Adjust the path to conn.php if necessary
 
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
 // Fetch product details based on ID from query string
 $product_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
@@ -130,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
             <p><strong>Year:</strong> <?php echo htmlspecialchars($product['year'] ?? 'Unknown Year'); ?></p>
 
             <!-- Add to Cart Form -->
-            <form action="product-details.php?id=<?php echo $product['id']; ?>" method="POST">
+            <form action="shop-details.php?id=<?php echo $product['id']; ?>" method="POST">
                 <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
                 <input type="hidden" name="product_name" value="<?php echo htmlspecialchars($product['name']); ?>">
                 <input type="hidden" name="product_price" value="<?php echo $product['price']; ?>">
@@ -144,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
             <h2>Other Products</h2>
             <?php while ($otherProduct = $otherProductsResult->fetch_assoc()): ?>
                 <div class="product">
-                    <a href="product-details.php?id=<?php echo $otherProduct['id']; ?>">
+                    <a href="shop-details.php?id=<?php echo $otherProduct['id']; ?>">
                         <?php
                         $otherImageSrc = '../adminside/' . $otherProduct['image'];
                         if (@file_exists($otherImageSrc) && !empty($otherProduct['image'])): ?>
@@ -153,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_cart'])) {
                             <img src="path/to/placeholder-image.jpg" alt="No Image Available">
                         <?php endif; ?>
                         <p><?php echo htmlspecialchars($otherProduct['name']); ?></p>
-                        <p><strong>Price:</strong> ₹<?php echo number_format($otherProduct['price'], 2); ?></p> <!-- Displaying price for other products -->
+                        <p><strong>Price:</strong> ₹<?php echo number_format($otherProduct['price'], 2); ?></p> <!-- Display Price -->
                     </a>
                 </div>
             <?php endwhile; ?>

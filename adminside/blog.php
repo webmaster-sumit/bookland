@@ -176,6 +176,7 @@ $posts = $conn->query($query)->fetch_all(MYSQLI_ASSOC);
         <table class="table table-bordered">
             <thead>
                 <tr>
+                    <th>Serial No.</th> <!-- Added Serial No. -->
                     <th>Name</th>
                     <th>Image</th>
                     <th>Description</th>
@@ -187,8 +188,11 @@ $posts = $conn->query($query)->fetch_all(MYSQLI_ASSOC);
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($posts as $post) { ?>
+                <?php 
+                $serial_no = 1; // Start with 1 for ascending order
+                foreach ($posts as $post) { ?>
                     <tr>
+                        <td><?= $serial_no++; ?></td> <!-- Display serial number in ascending order -->
                         <td><?= htmlspecialchars($post['name']); ?></td>
                         <td><img src="<?= htmlspecialchars($post['image']); ?>" alt=""></td>
                         <td><?= htmlspecialchars($post['description']); ?></td>

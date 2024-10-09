@@ -73,6 +73,7 @@
                         <li class="nav-item"><a class="nav-link" href="shoping.php">shpoing</a></li>
                         <li class="nav-item"><a class="nav-link" href="checkout.php">Checkout</a></li>
                         <li class="nav-item"><a class="nav-link" href="contact-us.php">Contact Us</a></li>
+                        <li class="nav-item"><a class="nav-link" href="cart1.php">My-Cart</a></li>
                   
                         <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
                     </ul>

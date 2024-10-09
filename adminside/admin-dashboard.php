@@ -33,11 +33,12 @@ $result = $conn->query("SELECT * FROM users");
     </style>
 </head>
 <body>
-
+<?php include "nav.php"?>
 <h1>User Management</h1>
 
 <table>
     <thead>
+   
         <tr>
             <th>ID</th>
             <th>Name</th>

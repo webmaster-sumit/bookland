@@ -93,11 +93,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <div class="card-footer text-center">
                         <p><a href="adm_login.php">Already have an account? Login here</a></p>
-                        
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Added margin-bottom to create space between form and footer -->
+        <div class="mb-5"></div>
     </div>
     <?php include('footer.php'); ?>
     <!-- JAVASCRIPT FILES ========================================= -->

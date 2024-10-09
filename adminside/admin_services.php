@@ -8,53 +8,52 @@ if (!isset($_SESSION['admin_id'])) {
     exit();
 }
 
-
-// Delete request handle kar rahe hain
+// Delete request handling
 if (isset($_GET['delete_id'])) {
     $deleteId = intval($_GET['delete_id']);
     
-    // Delete statement prepare kiya
+    // Prepare delete statement
     $stmt = $conn->prepare("DELETE FROM admin_services WHERE id = ?");
     $stmt->bind_param("i", $deleteId);
     
     if ($stmt->execute()) {
-        // Successfully delete ho gaya
-        header('Location: admin_services.php'); // Redirect taaki resubmission avoid ho
+        // Successfully deleted
+        header('Location: admin_services.php'); // Redirect to avoid form resubmission
         exit();
     } else {
-        // Agar delete mein error aaye toh
+        // Error occurred during deletion
         echo "Error deleting service: " . $conn->error;
     }
     $stmt->close();
 }
 
-// Form submission handle kar rahe hain service add/update ke liye
+// Handle form submission for adding/updating a service
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = $_POST['title'];
     $description = $_POST['description'];
     $status = $_POST['status'];
 
-    // File upload handle kar rahe hain
+    // Handle file upload
     $imagePath = '';
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $image = $_FILES['image'];
-        $uploadDir = 'uploads/'; // Yeh directory hona chahiye aur writable bhi
+        $uploadDir = 'uploads/'; // Make sure this directory exists and is writable
 
-        // File name ko sanitize kar rahe hain taaki security issue na ho
+        // Sanitize the file name to prevent security issues
         $imageName = basename($image['name']);
         $imageName = preg_replace("/[^a-zA-Z0-9\._-]/", "_", $imageName);
         $imagePath = $uploadDir . $imageName;
 
-        // File ko move kar rahe hain designated directory mein
+        // Move the file to the designated directory
         move_uploaded_file($image['tmp_name'], $imagePath);
     }
 
-    // Dekhte hain update karna hai ya add karna hai
+    // Check if updating an existing service or adding a new one
     if (isset($_POST['id']) && $_POST['id'] != '') {
-        // Existing service update kar rahe hain
+        // Update existing service
         $serviceId = intval($_POST['id']);
 
-        // Agar naya image upload ho, toh usko update karo; nahi toh purana rakh lo
+        // If a new image is uploaded, update it, otherwise keep the old one
         if ($imagePath != '') {
             $stmt = $conn->prepare("UPDATE admin_services SET title = ?, description = ?, image = ?, status = ? WHERE id = ?");
             $stmt->bind_param("ssssi", $title, $description, $imagePath, $status, $serviceId);
@@ -65,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->execute();
         $stmt->close();
     } else {
-        // New service add kar rahe hain
+        // Add new service
         $stmt = $conn->prepare("INSERT INTO admin_services (title, description, image, status) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("ssss", $title, $description, $imagePath, $status);
         $stmt->execute();
@@ -77,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     exit();
 }
 
-// Database se saare services fetch kar rahe hain
+// Fetch all services from the database
 $result = $conn->query("SELECT * FROM admin_services");
 $services = $result->fetch_all(MYSQLI_ASSOC);
 ?>
@@ -109,7 +108,7 @@ $services = $result->fetch_all(MYSQLI_ASSOC);
     <div class="container">
         <h1 class="my-4">Service Management</h1>
 
-        <!-- Form service add/update karne ke liye -->
+        <!-- Form for adding/updating service -->
         <form action="" method="POST" enctype="multipart/form-data" class="border p-4 bg-light rounded">
             <div class="form-group">
                 <label for="title">Title:</label>
@@ -130,15 +129,15 @@ $services = $result->fetch_all(MYSQLI_ASSOC);
                     <option value="inactive">Inactive</option>
                 </select>
             </div>
-            <input type="hidden" name="id" value=""> <!-- Hidden field service ID ke liye -->
+            <input type="hidden" name="id" value=""> <!-- Hidden field for service ID -->
             <button type="submit" class="btn btn-primary">Save Service</button>
         </form>
 
-        <!-- Table services ko display karne ke liye -->
+        <!-- Table for displaying services -->
         <table class="table table-bordered table-striped mt-4">
             <thead class="thead-dark">
                 <tr>
-                    <th>ID</th>
+                    <th>Serial No.</th>
                     <th>Title</th>
                     <th>Description</th>
                     <th>Image</th>
@@ -149,9 +148,11 @@ $services = $result->fetch_all(MYSQLI_ASSOC);
             </thead>
             <tbody>
                 <?php if (count($services) > 0): ?>
-                    <?php foreach ($services as $service): ?>
+                    <?php 
+                    $serial_no = count($services); // Start serial number with the total count of services
+                    foreach ($services as $service): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($service['id']); ?></td>
+                        <td><?php echo $serial_no--; ?></td> <!-- Serial number in descending order -->
                         <td><?php echo htmlspecialchars($service['title']); ?></td>
                         <td><?php echo htmlspecialchars($service['description']); ?></td>
                         <td>
@@ -163,13 +164,13 @@ $services = $result->fetch_all(MYSQLI_ASSOC);
                         <td><?php echo htmlspecialchars($service['created_at']); ?></td>
                         <td>
                             <a href="javascript:void(0);" class="btn btn-warning button" onclick="populateForm(<?php echo htmlspecialchars(json_encode($service)); ?>)">Update</a>
-                            <a href="?delete_id=<?php echo htmlspecialchars($service['id']); ?>" class="btn btn-danger button" onclick="return confirm('Kya aap sach mein is service ko delete karna chahte hain?');">Delete</a>
+                            <a href="?delete_id=<?php echo htmlspecialchars($service['id']); ?>" class="btn btn-danger button" onclick="return confirm('Are you sure you want to delete this service?');">Delete</a>
                         </td>
                     </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="7" class="text-center">Filhaal koi services available nahi hain.</td>
+                        <td colspan="7" class="text-center">No services available.</td>
                     </tr>
                 <?php endif; ?>
             </tbody>

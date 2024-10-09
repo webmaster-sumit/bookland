@@ -124,7 +124,7 @@ $conn->close();
                 </div>
                 <div class="text-left">
                     <button type="submit" class="btn btn-primary btnhover me-2">Login</button>
-                    <a href="forgot-password.php" class="m-l5"><i class="fas fa-unlock-alt"></i> Forgot Password</a>
+                    
                 </div>
             </form>
         </div>
